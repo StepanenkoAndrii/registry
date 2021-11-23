@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv leftDiv">
+    <div class="authImgDiv">
+        <a href="/">
+            <img id="backImg" src="/images/back.png" alt="back">
+        </a>
+    </div>
+</div>
+<div class="authContainerDiv log">
+    <h1 class="authHeaderH2">Авторизація</h1>
+    <form method="POST" action="/auth/login/data" enctype="multipart/form-data">
+        <div class="inputBoxDiv">
+            <input type="text" name="login" value="{{params}}" required>
+            <label>Логін</label>
+        </div>
+        <div class="inputBoxDiv">
+            <input type="password" name="password" required>
+            <label>Пароль</label>
+        </div>
+        <p class="errorP">{{errorMessage}}</p>
+        <input type="submit" name="submit" value="Підтвердити">
+        <a href="/auth/registration">Реєстрація для Адміністраторів</a>
+    </form>
+</div>
+{{> footer}}
+</body>
+</html>

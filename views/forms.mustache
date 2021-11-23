@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv leftDiv">
+    <div class="authImgDiv">
+        <a href="/">
+            <img id="backImg" src="/images/back.png" alt="back">
+        </a>
+    </div>
+</div>
+<div class="menuDiv rightDiv">
+    {{#login}}
+        <div class="roleDiv">
+            <p id="userDataP">{{role}}: {{login}}</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/" id="logoutA">
+                <img id="authImg" src="/images/logout3.png" alt="logout">
+            </a>
+        </div>
+    {{/login}}
+    {{^login}}
+        <div class="roleDiv">
+            <p id="userDataP">Користувач</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/auth/login">
+                <img id="authImg" src="/images/user.png" alt="login">
+            </a>
+        </div>
+    {{/login}}
+</div>
+<div class="mainDiv">
+    <div class="leftPartMainDiv">
+        <p class="mainListP">Список бланків</p>
+        <div class="scrollableDocsDiv">
+            {{#forms}}
+                <div>
+                    <a href="/forms/{{id}}">
+                        <div>
+                            <p>Бланк&nbsp;&nbsp;№{{number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Серія&nbsp;&nbsp;№{{series}}</p>
+                        </div>
+                    </a>
+                </div>
+            {{/forms}}
+            {{^forms}}
+                <p class="mainListP borderedP">За заданими параметрами пошуку бланків не знайдено</p>
+            {{/forms}}
+        </div>
+        {{#isRegistrator}}
+            <div class="aContainerDiv">
+                <a href="/forms/new" id="addA">Додати бланк</a>
+            </div>
+        {{/isRegistrator}}
+    </div>
+    <div class="rightPartMainDiv">
+        <p class="mainListP">Пошук (фільтрація)</p>
+        <form action="/forms/filtered" , method="get" , enctype="multipart/form-data">
+            <div class="filtersMainDiv">
+                <div class="tileDive">
+                    <img src="/images/calendar.png" alt="date of usage">
+                    <p>Дата використання</p>
+                    <div>
+                        <input class="dateInput" type="date" name="usage_date"/>
+                    </div>
+                </div>
+                <div class="tileDive">
+                    <img src="/images/series.png" alt="series">
+                    <p>Серія</p>
+                    <div>
+                        <input class="seriesInput" type="number" placeholder="0" name="series"/>
+                    </div>
+                </div>
+                <div class="tileDive">
+                    <img src="/images/number.png" alt="number">
+                    <p>Номер</p>
+                    <div>
+                        <input class="numberInput" type="number" placeholder="0" name="number"/>
+                    </div>
+                </div>
+                <div class="tileDive bigDiv">
+                    <img src="/images/register.png" alt="registered on">
+                    <p>Зареєстровано на</p>
+                    <div class="initialsDiv">
+                        <input class="registeredOnInput" type="text" placeholder="Ім'я: Іван" name="name"/>
+                        <input class="registeredOnInput" type="text" placeholder="Прізвище: Іванов" name="surname"/>
+                        <input class="registeredOnInput" type="text" placeholder="По-батькові: Іванович"
+                               name="middle_name"/>
+                    </div>
+                </div>
+                <div class="tileDive">
+                    <img src="/images/status.png" alt="document status">
+                    <p>Статус бланка</p>
+                    <div>
+                        <select class="statusInput" name="status">
+                            <option value="">-- статус --</option>
+                            <option value="Зіпсований">Зіпсований</option>
+                            <option value="Невикористаний">Невикористаний</option>
+                            <option value="Використаний">Використаний</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="Пошук">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{> footer}}
+</body>
+<!--<script>-->
+<!--    window.onload(() => {-->
+<!--        document.getElementById("userDataP").innerHTML = JSON.parse(localStorage.getItem("user")).role + ": " + JSON.parse(localStorage.getItem("user")).login-->
+<!--    })-->
+<!--</script>-->
+<!--<script src="/javascripts/registration.js"></script>-->
+</html>

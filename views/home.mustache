@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv rightDiv">
+    {{#login}}
+        <div class="roleDiv">
+            <p id="userDataP">{{role}}: {{login}}</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/" id="logoutA">
+                <img id="authImg" src="/images/logout3.png" alt="logout">
+            </a>
+        </div>
+    {{/login}}
+    {{^login}}
+        <div class="roleDiv">
+            <p id="userDataP">Користувач</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/auth/login">
+                <img id="authImg" src="/images/user.png" alt="login">
+            </a>
+        </div>
+    {{/login}}
+</div>
+<div class="mainContainerDiv">
+    <img src="images/forms.png" alt="documents">
+    <h1 class="authHeaderH2">Ласкаво просимо!</h1>
+    <a href="/forms/all">Перейти до списку бланків</a>
+</div>
+{{> footer}}
+</body>
+<script src="/javascripts/homeScript.js"></script>
+</html>

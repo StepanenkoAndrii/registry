@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv leftDiv">
+    <div class="authImgDiv">
+        <a href="/auth/login">
+            <img id="backImg" src="/images/back.png" alt="back">
+        </a>
+    </div>
+</div>
+<div class="authContainerDiv reg">
+    <script src="/javascripts/registration.js"></script>
+    <h1 class="authHeaderH2">Реєстрація</h1>
+    <form class="scrollableRegForm" method="POST" action="/auth/registration" enctype="multipart/form-data">
+        <div class="mainFormDiv">
+            <div class="leftFormDiv">
+                <div>
+                    <input class="regInput" type="text" name="name" placeholder="Ім'я" required>
+                    <!--                <label>Ім'я</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="text" name="surname" placeholder="Прізвище" required>
+                    <!--                <label>Прізвище</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="text" name="middle_name" placeholder="По-батькові" required>
+                    <!--                <label>По-батькові</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="text" name="birthdate" placeholder="Дата народження" onfocus="(this.type='date')"
+                           onblur="(this.type='text')" required>
+                    <!--                <label>Дата народження</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="text" name="login" placeholder="Логін" required>
+                    <!--                <label>Логін</label>-->
+                </div>
+            </div>
+            <div class="centralFormDiv">
+                <div>
+                    <input class="regInput" type="text" name="passport_number" placeholder="Номер паспорта" required>
+                    <!--                    <label>Номер паспорта</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="text" name="passport_series" maxlength="2" minlength="2" placeholder="Серія паспорта">
+                    <!--                    <label>Серія паспорта</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="text" name="passport_date" placeholder="Дата видачі паспорта"
+                           onfocus="(this.type='date')"
+                           onblur="(this.type='text')" required>
+                    <!--                    <label>Дата видачі</label>-->
+                </div>
+                <div>
+                    <!--                    <input type="number" name="passport_issue" maxlength="4" minlength="4" placeholder="Орган видачі" required>-->
+                    <!--                    <label>Орган видачі</label>-->
+                    <select class="regInput" class="statusInput" name="passport_issue" required>
+                        <option value="">-- Орган видачі --</option>
+                        {{#issues}}
+                            <option value="{{number}}">{{number}}</option>
+                        {{/issues}}
+                        <!--                        <option value="Орг1">Орг1</option>-->
+                        <!--                        <option value="Орг2">Орг2</option>-->
+                        <!--                        <option value="Орг3">Орг3</option>-->
+                    </select>
+                </div>
+                <div>
+                    <input class="regInput" type="number" name="taxpayer_number" maxlength="10" minlength="10" placeholder="РНОКПП"
+                           required>
+                    <!--                    <label>РНОКПП</label>-->
+                </div>
+            </div>
+            <div class="rightFormDiv">
+                <div>
+                    <input class="regInput" type="text" name="email" placeholder="Електронна пошта" required>
+                    <!--                    <label>Email</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="password" name="password" placeholder="Пароль" required>
+                    <!--                    <label>Пароль</label>-->
+                </div>
+                <div>
+                    <input class="regInput" type="password" name="password_confirmation" placeholder="Підтвердити пароль" required>
+                    <!--                    <label>Підтвердити пароль</label>-->
+                </div>
+                <div>
+                    <select class="regInput" class="statusInput" name="institution">
+                        <option value="">-- Організація --</option>
+                        {{#institutions}}
+                            <option value="{{name}}">{{name}}</option>
+                        {{/institutions}}
+                    </select>
+                </div>
+                <div>
+                    <select class="regInput" class="statusInput" name="position">
+                        <option value="">-- Посада --</option>
+                        {{#positions}}
+                            <option value="{{name}}">{{name}}</option>
+                        {{/positions}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <p class="errorP">{{errorMessage}}</p>
+        <input type="submit" name="submit" value="Підтвердити">
+    </form>
+</div>
+{{> footer}}
+</body>
+</html>

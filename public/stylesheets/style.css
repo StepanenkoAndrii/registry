@@ -1,0 +1,531 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: url('../images/background_1.jpg') no-repeat;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+button, input, select {
+    outline: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.authContainerDiv {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 60px;
+    background: rgba(0, 0, 0, 0.8);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5),
+    0 15px 35px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+.log {
+    width: 600px;
+}
+
+.authContainerDiv h1 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.authContainerDiv .inputBoxDiv {
+    position: relative;
+}
+
+.authContainerDiv .inputBoxDiv input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+}
+
+.authContainerDiv .inputBoxDiv label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.authContainerDiv .inputBoxDiv input:focus ~ label,
+.authContainerDiv .inputBoxDiv input:valid ~ label {
+    top: -24px;
+    left: 0;
+    color: #0394f4;
+    font-size: 14px;
+    transition: all 0.33s ease-in-out;
+}
+
+.authContainerDiv input[type="submit"] {
+    border: 2px solid #fff;
+    color: #fff;
+    background: transparent;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: all 0.33s ease-in-out;
+    float: left;
+}
+
+.authContainerDiv input[type="submit"]:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+.authContainerDiv a {
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 50px;
+    margin-top: 10px;
+    display: block;
+    border-bottom: 1px solid #ffffff;
+    padding: 3px 0;
+    transition: all 0.33s ease-in-out;
+    float: right;
+}
+
+.authContainerDiv a:hover {
+    transform: scale(1.1);
+}
+
+header {
+    /*position: absolute;*/
+    margin: auto;
+    width: 100%;
+}
+
+header p {
+    font-size: 28px;
+    display: block;
+    text-align: center;
+    margin-top: 80px;
+}
+
+footer {
+    position: absolute;
+    margin: auto;
+    bottom: 10px;
+    width: 100%;
+}
+
+footer p {
+    font-size: 14px;
+    display: block;
+    text-align: center;
+}
+
+/*home.mustache*/
+
+.mainContainerDiv {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mainContainerDiv img {
+    display: block;
+    margin: auto;
+    width: 200px;
+}
+
+.mainContainerDiv h1 {
+    display: block;
+    margin-top: 50px;
+    font-size: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.mainContainerDiv a {
+    display: block;
+    margin-top: 30px;
+    font-size: 36px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    border: 3px solid #000;
+    color: #000;
+    background: transparent;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.33s ease-in-out;
+}
+
+.mainContainerDiv a:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.menuDiv {
+    position: absolute;
+    top: 30px;
+}
+
+.leftDiv {
+    left: 60px;
+}
+
+.rightDiv {
+    right: 60px;
+    float: left;
+}
+
+.authImgDiv {
+    float: left;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    transition: all 0.33s ease-in-out;
+}
+
+.authImgDiv img {
+    width: 40px;
+}
+
+.authImgDiv:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.menuDiv .roleDiv {
+    /*width: 100px;*/
+    float: right;
+    margin-left: 20px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*forms.mustache*/
+
+.mainDiv {
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    margin: 80px auto;
+    /*position: relative;*/
+}
+
+.leftPartMainDiv, .rightPartMainDiv {
+    width: 50%;
+    float: left;
+    margin: auto;
+    /*position: absolute;*/
+    top: 0;
+    height: 100%;
+}
+
+.leftPartMainDiv {
+    border-right: 1px solid black;
+    margin-top: 0px;
+    left: 0;
+}
+
+.rightPartMainDiv {
+    border-left: 1px solid black;
+    right: 0;
+}
+
+.scrollableDocsDiv, .filtersMainDiv {
+    width: 70%;
+    height: 80%;
+    overflow-y: auto;
+    margin: 0 auto 40px auto;
+}
+
+.scrollableDocsDiv div {
+    width: 100%;
+}
+
+.scrollableDocsDiv div div {
+    border: 2px solid black;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 20px 6px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.33s ease-in-out;
+    width: 90%;
+}
+
+.scrollableDocsDiv div div:last-child {
+    margin-bottom: 20px;
+}
+
+.scrollableDocsDiv div div:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.scrollableDocsDiv div div p {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.mainListP {
+    font-weight: 600;
+    font-size: 36px;
+    display: block;
+    margin: 0 auto 20px auto;
+    /*border: 1px solid black;*/
+    text-align: center;
+}
+
+.filtersMainDiv {
+    /*position: relative;*/
+}
+
+.filtersMainDiv div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    /*padding-left: 3%;*/
+    /*border: 1px solid black;*/
+}
+
+.filtersMainDiv .tileDive {
+    margin-top: 20px;
+    border: 2px solid black;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.filtersMainDiv img {
+    width: 50px;
+    /*float: left;*/
+}
+
+.filtersMainDiv div p {
+    display: block;
+    margin-left: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    /*float: left;*/
+}
+
+.filtersMainDiv div input, select {
+    /*margin-left: 150px;*/
+    border: none;
+    color: #000;
+    font-size: 16px;
+    padding: 5px 5px;
+    background: transparent;
+    border-bottom: 1px solid black;
+    /*float: right;*/
+    display: block;
+    /*align-self: self-end;*/
+    width: 200px;
+    /*height: 40px;*/
+}
+
+input::placeholder {
+    color: #373737;
+}
+
+.filtersMainDiv div input[type = "submit"] {
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 15px auto 15px auto;
+    text-align: center;
+    border: 3px solid #000;
+    color: #000;
+    background: transparent;
+    padding: 10px 40px;
+    cursor: pointer;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.33s ease-in-out;
+}
+
+.filtersMainDiv div input[type = "submit"]:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.filtersMainDiv div div input {
+    float: left;
+    margin-left: 0;
+    /*margin-top: 10px;*/
+}
+
+.filtersMainDiv div div {
+    position: absolute;
+    right: 5px;
+    /*top: 0;*/
+    float: right;
+    display: block;
+    width: 40%;
+    /*margin-left: 100px;*/
+    /*border: 1px solid black;*/
+}
+
+.filtersMainDiv div .initialsDiv {
+    /*top: 0;*/
+}
+
+.filtersMainDiv div .initialsDiv input:nth-child(2),
+.filtersMainDiv div .initialsDiv input:nth-child(3) {
+    margin-top: 10px;
+}
+
+.bigDiv {
+    height: 115px;
+}
+
+.borderedP {
+    display: block;
+    margin-top: 100px;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+    transition: all 0.33s ease-in-out;
+}
+
+.borderedP:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/*form.mustache*/
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.formDiv div div img {
+    width: 280px;
+}
+
+.formDiv div div {
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 20px 6px;
+    border-radius: 20px;
+    transition: all 0.33s ease-in-out;
+    width: 90%;
+}
+
+.formDiv div div p, .formDiv div div img {
+    display: block;
+    margin: auto;
+}
+
+.formDiv div div p {
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 36px;
+    text-align: center;
+}
+
+.firstP {
+    margin-top: 100px !important;
+}
+
+/*registratiom.mustache*/
+
+.reg {
+    width: 1400px;
+}
+
+.scrollableRegForm {
+    height: 50vh;
+    overflow-y: auto;
+    margin: auto;
+}
+
+.leftFormDiv, .centralFormDiv, .rightFormDiv {
+    width: 33%;
+    /*border: 1px solid white;*/
+    float: left;
+}
+
+.mainFormDiv div select option {
+    /*color: black;*/
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.leftFormDiv div input, .centralFormDiv div input, .rightFormDiv div input, .mainFormDiv div select {
+    width: 80%;
+    display: block;
+    padding: 10px 0;
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 1px;
+    margin: 0 auto 30px auto;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+}
+
+.leftFormDiv div input::placeholder, .centralFormDiv div input::placeholder, .rightFormDiv div input::placeholder {
+    color: #fff;
+}
+
+.leftFormDiv div input:focus::placeholder, .centralFormDiv div input:focus::placeholder, .rightFormDiv div input:focus::placeholder, .mainFormDiv div select:focus::placeholder {
+    color: rgba(111, 181, 243, 0.5);
+}
+
+.mainFormDiv {
+    /*float: left;*/
+    /*border: 2px solid red;*/
+    /*height: 90%;*/
+}
+
+.scrollableRegForm input[type="submit"] {
+    float: none;
+    margin: auto;
+    display: block;
+}
+
+.errorP {
+    display: block;
+    color: #fb3434;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 20px auto 20px auto;
+}
+
+
+/*error.mustache*/
+
+.err {
+    width: 500px;
+}
