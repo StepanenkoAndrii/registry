@@ -106,3 +106,4 @@ dist
 # Custom
 package-lock.json
 nodemon.json
+node_modules
