@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv leftDiv">
+    <div class="authImgDiv">
+        <a href="/">
+            <img id="backImg" src="/images/back.png" alt="back">
+        </a>
+    </div>
+</div>
+<div class="menuDiv rightDiv">
+    {{#login}}
+        <div class="roleDiv">
+            <a id="userDataP">{{role}}: {{login}}</a>
+        </div>
+        <div class="authImgDiv">
+            <a href="/" id="logoutA">
+                <img id="authImg" src="/images/logout3.png" alt="logout">
+            </a>
+        </div>
+    {{/login}}
+    {{^login}}
+        <div class="roleDiv">
+            <p id="userDataP">Користувач</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/auth/login">
+                <img id="authImg" src="/images/user.png" alt="login">
+            </a>
+        </div>
+    {{/login}}
+</div>
+<div class="mainDiv">
+    <div class="leftPartMainDiv" id="withoutLineDiv">
+        <div class="formDiv">
+            {{#user}}
+                <div>
+                    <div>
+                        <img src="/images/user.png" alt="document">
+                        <p>{{login}} ({{role}})</p>
+                        <p>Ініціали: {{name}} {{surname}} {{middle_name}}</p>
+                        <p>Дата народження: {{birth_date}}</p>
+                        {{^isRegistrator}}
+                            {{#isRegOnPage}}
+                                <div class="registratorEditDiv">
+                                    {{^is_active}}
+                                        <button><a href="/forms/activate/{{id}}">Активувати</a></button>
+                                    {{/is_active}}
+                                    {{#is_active}}
+                                        <button><a href="/forms/deactivate/{{id}}">Деактивувати</a></button>
+                                    {{/is_active}}
+                                </div>
+                            {{/isRegOnPage}}
+                        {{/isRegistrator}}
+                    </div>
+                </div>
+            {{/user}}
+        </div>
+    </div>
+    {{^view}}
+        <div class="rightPartMainDiv">
+            <div class="filtersMainDiv">
+                <div class="aProfileDiv">
+                    <a href="/forms/all">Перегляд бланків</a>
+                </div>
+                {{^isRegistrator}}
+                    <div class="aProfileDiv">
+                        <a href="/forms/registrators">Перегляд Реєстраторів</a>
+                    </div>
+                    <div class="aProfileDiv">
+                        <a href="/auth/registration">Зареєструвати Реєстратора</a>
+                    </div>
+                    <div class="aProfileDiv">
+                        <a href="">Журнал дій</a>
+                    </div>
+                {{/isRegistrator}}
+            </div>
+        </div>
+    {{/view}}
+</div>
+{{> footer}}
+</body>
+</html>

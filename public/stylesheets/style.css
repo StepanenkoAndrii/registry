@@ -586,3 +586,91 @@ a {
 #editInput {
     width: 220px;
 }
+
+/*profilePage*/
+
+.aProfileDiv {
+    width: 90%;
+    margin: 30px auto;
+    padding: 15px 20px;
+    border: 3px solid black;
+    border-radius: 20px;
+    text-align: center;
+    display: block !important;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.33s ease-in-out;
+}
+
+.aProfileDiv:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.aProfileDiv a {
+    display: block;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.registratorEditDiv {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto;
+    padding: 15px 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/*.registratorEditDiv a:hover {*/
+/*    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),*/
+/*    0 0 15px rgba(0, 0, 0, 0.5);*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.registratorEditDiv a {*/
+/*    float: left;*/
+/*    padding: 15px 20px;*/
+/*    border: 3px solid black;*/
+/*    border-radius: 20px;*/
+/*    text-align: center;*/
+/*    display: block;*/
+/*    font-size: 28px;*/
+/*    font-weight: 600;*/
+/*    cursor: pointer;*/
+/*    text-decoration: none;*/
+/*    transition: all 0.33s ease-in-out;*/
+/*}*/
+
+/*.registratorEditDiv a:last-of-type {*/
+/*    margin-left: 20px;*/
+/*}*/
+
+.registratorEditDiv button:last-of-type {
+    margin-left: 20px;
+}
+
+.registratorEditDiv button:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.registratorEditDiv button {
+    background: transparent;
+    /*border: none;*/
+    padding: 15px 20px;
+    border: 3px solid black;
+    border-radius: 20px;
+    text-align: center;
+    display: block;
+    font-size: 28px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.33s ease-in-out;
+}

@@ -58,7 +58,7 @@ module.exports = {
             res.render('home', {login: "", role: ""});
             return;
         }
-        res.render('home', {login: currentPerson.rows[0].login, role: currentPerson.rows[0].role});
+        res.render('home', {login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id});
     },
 
     async getFormsData(req, res) {
@@ -97,11 +97,38 @@ module.exports = {
     async getUserById(req, res) {
         const user = await formRepository.getUserById(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();
-        // if (currentPerson.rowCount === 0) {
-        //     res.render('form', {form: form.rows[0], login: "", role: "", isRegistrator: false});
-        //     return;
-        // }
-        res.render('adminPage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
+        res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: false});
     },
+
+    async getRegistrators(req, res) {
+        const registrators = await formRepository.getRegistrators();
+        res.render('registrators', {registrators: registrators.rows});
+    },
+
+    async viewRegistrator(req, res) {
+        const user = await formRepository.getUserById(req.params.id);
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: true});
+    },
+
+    async activateRegistrator(req, res) {
+        const activatedRegistrator = await formRepository.activateRegistrator(req.params.id);
+        const user = await formRepository.getUserById(req.params.id);
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: true});
+        // res.redirect(`/forms/viewRegistrator/${user.rows[0].id}`);
+    },
+
+    async deactivateRegistrator(req, res) {
+        const deactivatedRegistrator = await formRepository.deactivateRegistrator(req.params.id);
+        const user = await formRepository.getUserById(req.params.id);
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: true});
+        // res.redirect(`/forms/viewRegistrator/${user.rows[0].id}`);
+    },
+
 }

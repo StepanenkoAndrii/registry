@@ -38,7 +38,7 @@ class FormRepository {
     };
 
     async getCurrentPerson() {
-        return await db.query(`select login, role from persons where id = (select person_id from current_person)`);
+        return await db.query(`select id, login, role from persons where id = (select person_id from current_person)`);
     };
 
     async getLogins() {
@@ -63,7 +63,19 @@ class FormRepository {
     };
 
     async getUserById(id) {
-        return await db.query(`select * from persons where (id = ${id})`);
+        return await db.query(`select id, name, surname, middle_name, to_char(birth_date, 'YYYY-MM-DD') as birth_date, role, is_active from persons where (id = ${id})`);
+    };
+
+    async getRegistrators() {
+        return await db.query(`select * from persons where (role = 'Реєстратор')`);
+    };
+
+    async activateRegistrator(id) {
+        return await db.query(`update persons set is_active = true where (id = ${id})`);
+    };
+
+    async deactivateRegistrator(id) {
+        return await db.query(`update persons set is_active = false where (id = ${id})`);
     };
 }
 

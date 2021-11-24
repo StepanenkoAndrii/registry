@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv leftDiv">
+    <div class="authImgDiv">
+        <a href="/">
+            <img id="backImg" src="/images/back.png" alt="back">
+        </a>
+    </div>
+</div>
+<div class="mainDiv">
+    <div class="rightPartMainDiv" id="withoutLineDiv">
+        <p class="mainListP">Перегляд Реєстраторів</p>
+        <div class="scrollableDocsDiv" id="style-1">
+            {{#registrators}}
+                <div>
+                    <a href="/forms/viewRegistrator/{{id}}">
+                        <div>
+                            <p>&nbsp;&nbsp;{{login}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{email}}</p>
+                        </div>
+                    </a>
+                </div>
+            {{/registrators}}
+            {{^registrators}}
+                <p class="mainListP borderedP">Реєстраторів не знайдено</p>
+            {{/registrators}}
+        </div>
+    </div>
+</div>
+{{> footer}}
+</body>
+</html>
