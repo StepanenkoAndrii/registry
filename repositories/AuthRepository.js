@@ -35,7 +35,6 @@ class AuthRepository {
     };
 
     async addAdmin(adminData) {
-        // console.log(adminData.passport_number, adminData.passport_series, adminData.passport_date, adminData.passport_issue, adminData.name, adminData.surname, adminData.middle_name, adminData.passport_number, adminData.birthdate, adminData.taxpayer_number, adminData.login, adminData.institution, adminData.position, adminData.email);
         return await db.query(`insert into passports (number, series, issue_date, issued_by) values (${adminData.passport_number}, ${adminData.series === undefined ? null : adminData.series}, '${adminData.passport_date.toString()}', (select id from passport_authorities where number = ${adminData.passport_issue}));
             insert into persons (
             name, surname, middle_name, passport_id, birth_date, taxpayer_number, login, password, institution_id, position_id, is_active, role, email_id
@@ -48,7 +47,6 @@ class AuthRepository {
     };
 
     async addRegistrator(adminData) {
-        // console.log(adminData.passport_number, adminData.passport_series, adminData.passport_date, adminData.passport_issue, adminData.name, adminData.surname, adminData.middle_name, adminData.passport_number, adminData.birthdate, adminData.taxpayer_number, adminData.login, adminData.institution, adminData.position, adminData.email);
         return await db.query(`insert into passports (number, series, issue_date, issued_by) values (${adminData.passport_number}, ${adminData.series === undefined ? null : adminData.series}, '${adminData.passport_date.toString()}', (select id from passport_authorities where number = ${adminData.passport_issue}));
             insert into persons (
             name, surname, middle_name, passport_id, birth_date, taxpayer_number, login, password, institution_id, position_id, is_active, role, email_id
@@ -62,7 +60,6 @@ class AuthRepository {
 
     async getErrorMessage(data, type) {
         if (type === 1) {
-            // console.log(data);
             let foundUsers = await this.getUser(data.login.toString());
             let foundUsersWithPass = await this.getUserWithPass(data.login.toString(), data.password.toString());
             let deactivatedRegistrators = await this.getDeRegistrators(data.login.toString());

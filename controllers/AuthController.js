@@ -62,7 +62,6 @@ module.exports = {
             return;
         }
         const user = await authRepository.getLoginData(req.body);
-        console.log(user.rows[0]);
         if (user.rowCount > 0) {
             const newCurrentPerson = await authRepository.addCurrentPerson(user.rows[0].id);
             res.redirect('/forms');
