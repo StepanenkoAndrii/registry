@@ -55,6 +55,16 @@ class FormRepository {
         (select id from form_statuses where (status = '${formData.status.toString()}'))
         )`);
     };
+
+    async editForm(formData, id) {
+        return await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = '${formData.usage_date.toString()}', 
+        person_id = (select id from persons where (login = '${formData.login.toString()}')),
+        status_id = (select id from form_statuses where (status = '${formData.status.toString()}')) where (id = ${id})`);
+    };
+
+    async getUserById(id) {
+        return await db.query(`select * from persons where (id = ${id})`);
+    };
 }
 
 module.exports = FormRepository;

@@ -13,7 +13,7 @@
 <div class="menuDiv rightDiv">
     {{#login}}
         <div class="roleDiv">
-            <p id="userDataP">{{role}}: {{login}}</p>
+            <a id="userDataP">{{role}}: {{login}}</a>
         </div>
         <div class="authImgDiv">
             <a href="/" id="logoutA">
@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="rightPartMainDiv">
-            {{#form}}
+        {{#form}}
             <div class="filtersMainDiv">
                 <div class="tileDive">
                     <img src="/images/calendar.png" alt="date of usage">
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            {{/form}}
+        {{/form}}
     </div>
 </div>
 {{> footer}}

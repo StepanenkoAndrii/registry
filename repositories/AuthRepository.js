@@ -71,7 +71,7 @@ class AuthRepository {
     };
 
     async deleteCurrentPerson() {
-        return await db.query(`delete from current_person`);
+        return await db.query(`'delete' from current_person`);
     };
 }
 
