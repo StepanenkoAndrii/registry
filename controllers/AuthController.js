@@ -14,7 +14,7 @@ module.exports = {
                 issues: issues.rows, login: "", role: "admin", isRegistrator: false});
             return;
         }
-        res.render('registration', {institutions: institutions.rows, positions: positions.rows, issues: issues.rows,
+        res.render('registration', {institutions: institutions.rows, positions: positions.rows, issues: issues.rows, id: currentPerson.rows[0].id,
             role: currentPerson.rows[0].role === "Адміністратор" ? "registrator" : ""});
     },
 

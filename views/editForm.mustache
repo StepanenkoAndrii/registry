@@ -5,15 +5,17 @@
 {{> header}}
 <div class="menuDiv leftDiv">
     <div class="authImgDiv">
-        <a href="/">
-            <img id="backImg" src="/images/back.png" alt="back">
-        </a>
+        {{#form}}
+            <a href="/forms/{{id}}">
+                <img id="backImg" src="/images/back.png" alt="back">
+            </a>
+        {{/form}}
     </div>
 </div>
 <div class="menuDiv rightDiv">
     {{#login}}
         <div class="roleDiv">
-            <p id="userDataP">{{role}}: {{login}}</p>
+            <a href="/forms/profile/{{id}}" id="userDataP">{{role}}: {{login}}</a>
         </div>
         <div class="authImgDiv">
             <a href="/" id="logoutA">

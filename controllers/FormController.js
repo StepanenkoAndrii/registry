@@ -9,7 +9,7 @@ module.exports = {
             res.render('forms', {forms: forms.rows, login: "", role: "", isRegistrator: false});
             return;
         }
-        res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
     },
 
@@ -21,7 +21,7 @@ module.exports = {
             res.render('forms', {forms: forms.rows, login: "", role: "", isRegistrator: false});
             return;
         }
-        res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
     },
 
@@ -32,7 +32,7 @@ module.exports = {
             res.render('form', {form: form.rows[0], login: "", role: "", isRegistrator: false});
             return;
         }
-        res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", visible: false});
     },
 
@@ -45,7 +45,7 @@ module.exports = {
             res.render('editForm', {form: form.rows[0], login: "", role: "", isRegistrator: false});
             return;
         }
-        res.render('editForm', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('editForm', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", logins: logins.rows, statuses: statuses.rows});
     },
 
@@ -75,7 +75,7 @@ module.exports = {
             res.render('forms', {forms: forms.rows, login: "", role: "", isRegistrator: false});
             return;
         }
-        res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
     },
 
@@ -95,13 +95,15 @@ module.exports = {
     async getUserById(req, res) {
         const user = await formRepository.getUserById(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();
-        res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: false});
     },
 
     async getRegistrators(req, res) {
         const registrators = await formRepository.getRegistrators();
-        res.render('registrators', {registrators: registrators.rows});
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('registrators', {registrators: registrators.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
     },
 
     async viewRegistrator(req, res) {
@@ -131,7 +133,7 @@ module.exports = {
         const logs = await formRepository.getAllLogs();
         const types = await formRepository.getTypes();
         const currentPerson = await formRepository.getCurrentPerson();
-        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows, isEdited: false});
     },
 
@@ -139,7 +141,7 @@ module.exports = {
         const logs = await formRepository.getFilteredLogs(req.query.date, req.query.login, req.query.type);
         const types = await formRepository.getTypes();
         const currentPerson = await formRepository.getCurrentPerson();
-        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows});
     },
 
