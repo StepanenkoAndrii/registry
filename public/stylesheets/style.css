@@ -254,14 +254,14 @@ footer p {
     right: 0;
 }
 
-.scrollableDocsDiv, .filtersMainDiv {
+.scrollableDocsDiv, .scrollableDocsDiv2, .filtersMainDiv {
     width: 70%;
     height: 80%;
     overflow-y: auto;
     margin: 0 auto 0px auto;
 }
 
-.scrollableDocsDiv div {
+.scrollableDocsDiv div,  .scrollableDocsDiv2 div{
     width: 100%;
 }
 
@@ -278,11 +278,21 @@ footer p {
     width: 90%;
 }
 
-.scrollableDocsDiv div div:last-child {
+.scrollableDocsDiv2 div div {
+    border: 2px solid black;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 20px 6px;
+    border-radius: 20px;
+    transition: all 0.33s ease-in-out;
+    width: 90%;
+}
+
+.scrollableDocsDiv div div:last-child, .scrollableDocsDiv2 div div:last-child {
     margin-bottom: 20px;
 }
 
-.scrollableDocsDiv div div:hover {
+.scrollableDocsDiv div div:hover, .scrollableDocsDiv2 div div:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),
     0 0 15px rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -292,6 +302,18 @@ footer p {
     text-transform: uppercase;
     font-size: 20px;
     font-weight: 600;
+}
+
+.scrollableDocsDiv2 div div p {
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.scrollableDocsDiv2 div div p:first-of-type {
+    margin-top: 0;
 }
 
 #style-1::-webkit-scrollbar-track
@@ -673,4 +695,8 @@ a {
     cursor: pointer;
     text-decoration: none;
     transition: all 0.33s ease-in-out;
+}
+
+#bigInput {
+    width: 400px;
 }

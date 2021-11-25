@@ -77,6 +77,40 @@ class FormRepository {
     async deactivateRegistrator(id) {
         return await db.query(`update persons set is_active = false where (id = ${id})`);
     };
+
+    async getAllLogs() {
+        return await db.query(`select form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
+        inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
+        inner join (select id, type from types) as types on logs.type_id = types.id
+        inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data`);
+    };
+
+    async getTypes() {
+        return await db.query(`select * from types`);
+    };
+
+    async getFilteredLogs(date, login, type) {
+        let boolDate = false;
+        let boolType = false;
+
+        if (date.toString().length === 0) boolDate = true;
+        if (type.toString().length === 0) boolType = true;
+
+        return await db.query(`select * from 
+        (select form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, 
+        number, series, type, login from (select * from logs
+        inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
+        inner join (select id, type from types) as types on logs.type_id = types.id
+        inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data) as a
+        where ((${boolDate} or date = '${date.toString()}')
+        and (login like '%${login.toString()}%')
+        and (${boolType} or (type = '${type}')))`);
+    };
+
+    async deleteForm(id) {
+        await  db.query(`delete from logs where (form_id = ${id})`);
+        return await db.query(`delete from forms where (id = ${id})`);
+    };
 }
 
 module.exports = FormRepository;

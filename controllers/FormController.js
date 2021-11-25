@@ -3,14 +3,12 @@ const formRepository = new FormRepository();
 
 module.exports = {
     async getForms(req, res) {
-        // console.log("fdhf");
         const forms = await formRepository.getForms();
         const currentPerson = await formRepository.getCurrentPerson();
         if (currentPerson.rowCount === 0) {
             res.render('forms', {forms: forms.rows, login: "", role: "", isRegistrator: false});
             return;
         }
-        console.log("tyt");
         res.render('forms', {forms: forms.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
     },
@@ -35,7 +33,7 @@ module.exports = {
             return;
         }
         res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", visible: false});
     },
 
     async getEditFormById(req, res) {
@@ -119,7 +117,6 @@ module.exports = {
         const currentPerson = await formRepository.getCurrentPerson();
         res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: true});
-        // res.redirect(`/forms/viewRegistrator/${user.rows[0].id}`);
     },
 
     async deactivateRegistrator(req, res) {
@@ -128,7 +125,38 @@ module.exports = {
         const currentPerson = await formRepository.getCurrentPerson();
         res.render('profilePage', {user: user.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", isRegOnPage: user.rows[0].role === "Реєстратор", view: true});
-        // res.redirect(`/forms/viewRegistrator/${user.rows[0].id}`);
+    },
+
+    async getAllLogs(req, res) {
+        const logs = await formRepository.getAllLogs();
+        const types = await formRepository.getTypes();
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows, isEdited: false});
+    },
+
+    async getFilteredLogs(req, res) {
+        const logs = await formRepository.getFilteredLogs(req.query.date, req.query.login, req.query.type);
+        const types = await formRepository.getTypes();
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows});
+    },
+
+    async deactivateCreation(req, res) {
+        const form = await formRepository.getFormById(req.params.id);
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", visible: true});
+    },
+
+    async deleteForm(req, res) {
+        const deletedForm = await formRepository.deleteForm(req.params.id);
+        const logs = await formRepository.getAllLogs();
+        const types = await formRepository.getTypes();
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows, isEdited: false});
     },
 
 }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> head}}
+<body>
+{{> header}}
+<div class="menuDiv leftDiv">
+    <div class="authImgDiv">
+        <a href="/">
+            <img id="backImg" src="/images/back.png" alt="back">
+        </a>
+    </div>
+</div>
+<div class="menuDiv rightDiv">
+    {{#login}}
+        <div class="roleDiv">
+            <p id="userDataP">{{role}}: {{login}}</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/" id="logoutA">
+                <img id="authImg" src="/images/logout3.png" alt="logout">
+            </a>
+        </div>
+    {{/login}}
+    {{^login}}
+        <div class="roleDiv">
+            <p id="userDataP">Користувач</p>
+        </div>
+        <div class="authImgDiv">
+            <a href="/auth/login">
+                <img id="authImg" src="/images/user.png" alt="login">
+            </a>
+        </div>
+    {{/login}}
+</div>
+<div class="mainDiv">
+    <div class="leftPartMainDiv">
+        <p class="mainListP">Список логів</p>
+        <div class="scrollableDocsDiv2" id="style-1">
+            {{#logs}}
+                <div>
+                    <a href="/forms/created/{{form_id}}">
+                        <div>
+                            <p>Дія:&nbsp;&nbsp;{{type}}</p>
+                            <p>Дата зміни/створення:&nbsp;&nbsp;{{date}}</p>
+                            <p>Ким змінено/створено:&nbsp;&nbsp;{{login}}</p>
+                            <p>Бланк:&nbsp;&nbsp;№{{number}}&nbsp;&nbsp;</p>
+                            <p>Серія:&nbsp;&nbsp;№{{series}} </p>
+                            {{#isEdited}}
+                                <p>Бланк:&nbsp;&nbsp;№{{old_number}}</p>
+                                <p>Серія:&nbsp;&nbsp;№{{old_series}}</p>
+                            {{/isEdited}}
+                        </div>
+                    </a>
+                </div>
+            {{/logs}}
+            {{^logs}}
+                <p class="mainListP borderedP">Логи не знайдені</p>
+            {{/logs}}
+        </div>
+    </div>
+    <div class="rightPartMainDiv">
+        <p class="mainListP">Пошук (фільтрація)</p>
+        <form action="/forms/filteredLogs" , method="GET" , enctype="multipart/form-data">
+            <div class="filtersMainDiv">
+                <div class="tileDive">
+                    <img src="/images/calendar.png" alt="date of usage">
+                    <p>Дата зміни/створення</p>
+                    <div>
+                        <input class="dateInput" type="date" name="date"/>
+                    </div>
+                </div>
+                <div class="tileDive">
+                    <img src="/images/user.png" alt="user">
+                    <p>Ким змінено/створено</p>
+                    <div>
+                        <input class="loginInput" type="text" placeholder="0" name="login"/>
+                    </div>
+                </div>
+                <div class="tileDive">
+                    <img src="/images/status.png" alt="action type">
+                    <p>Вид дій</p>
+                    <div>
+                        <select class="statusInput" name="type">
+                            <option value="">-- вид дії --</option>
+                            {{#types}}
+                                <option value="{{type}}">{{type}}</option>
+                            {{/types}}
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="Пошук">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{> footer}}
+</body>
+<script src="/javascripts/logoutScript.js"></script>
+</html>

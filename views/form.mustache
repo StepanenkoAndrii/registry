@@ -5,7 +5,7 @@
 {{> header}}
 <div class="menuDiv leftDiv">
     <div class="authImgDiv">
-        <a href="/">
+        <a href="/forms">
             <img id="backImg" src="/images/back.png" alt="back">
         </a>
     </div>
@@ -52,7 +52,8 @@
         </div>
     </div>
     <div class="rightPartMainDiv">
-            {{#form}}
+        {{#form}}
+        <form action="/forms/{{id}}/delete/" , method="POST" , enctype="multipart/form-data">
             <div class="filtersMainDiv">
                 <div class="tileDive">
                     <img src="/images/calendar.png" alt="date of usage">
@@ -77,10 +78,16 @@
                         <p>{{status}}</p>
                     </div>
                 </div>
+                {{#visible}}
+                    <div>
+                        <input type="submit" value="Відмінити створення бланка" id="bigInput">
+                    </div>
+                {{/visible}}
             </div>
-            {{/form}}
+        {{/form}}
     </div>
 </div>
 {{> footer}}
 </body>
+<script src="/javascripts/logoutScript.js"></script>
 </html>
