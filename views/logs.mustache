@@ -38,19 +38,30 @@
         <div class="scrollableDocsDiv2" id="style-1">
             {{#logs}}
                 <div>
-                    <a href="/forms/created/{{form_id}}">
-                        <div>
-                            <p>Дія:&nbsp;&nbsp;{{type}}</p>
-                            <p>Дата зміни/створення:&nbsp;&nbsp;{{date}}</p>
-                            <p>Ким змінено/створено:&nbsp;&nbsp;{{login}}</p>
-                            <p>Бланк:&nbsp;&nbsp;№{{number}}&nbsp;&nbsp;</p>
-                            <p>Серія:&nbsp;&nbsp;№{{series}} </p>
-                            {{#isEdited}}
-                                <p>Бланк:&nbsp;&nbsp;№{{old_number}}</p>
-                                <p>Серія:&nbsp;&nbsp;№{{old_series}}</p>
-                            {{/isEdited}}
-                        </div>
-                    </a>
+                    {{^is_edited}}
+                        <a href="/forms/created/{{form_id}}">
+                            <div>
+                                <p>Дія:&nbsp;&nbsp;{{type}}</p>
+                                <p>Дата зміни/створення:&nbsp;&nbsp;{{date}}</p>
+                                <p>Ким змінено/створено:&nbsp;&nbsp;{{login}}</p>
+                                <p>Бланк:&nbsp;&nbsp;№{{number}}&nbsp;&nbsp;</p>
+                                <p>Серія:&nbsp;&nbsp;№{{series}} </p>
+                            </div>
+                        </a>
+                    {{/is_edited}}
+                    {{#is_edited}}
+                        <a href="/forms/updated/{{id}}">
+                            <div>
+                                <p>Дія:&nbsp;&nbsp;{{type}}</p>
+                                <p>Дата зміни/створення:&nbsp;&nbsp;{{date}}</p>
+                                <p>Ким змінено/створено:&nbsp;&nbsp;{{login}}</p>
+                                <p>Бланк:&nbsp;&nbsp;№{{number}}&nbsp;&nbsp;</p>
+                                <p>Серія:&nbsp;&nbsp;№{{series}} </p>
+                                <p>(Старе значення) Бланк:&nbsp;&nbsp;№{{old_number}}</p>
+                                <p>(Старе значення) Серія:&nbsp;&nbsp;№{{old_series}}</p>
+                            </div>
+                        </a>
+                    {{/is_edited}}
                 </div>
             {{/logs}}
             {{^logs}}

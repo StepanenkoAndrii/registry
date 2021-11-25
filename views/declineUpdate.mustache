@@ -57,22 +57,20 @@
                     <p>{{old_usage_date}}</p>
                 </div>
             </div>
-            {{#form}}
-                <div class="tileDive bigDiv">
-                    <img src="/images/register.png" alt="registered on">
-                    <p>Зареєстровано на</p>
-                    <div class="initialsDiv">
-                        <p>{{name}}</p>
-                        <p>{{surname}}</p>
-                        <p>{{middle_name}}</p>
-                    </div>
+            <div class="tileDive bigDiv">
+                <img src="/images/register.png" alt="registered on">
+                <p>Зареєстровано на</p>
+                <div class="initialsDiv">
+                    <p>{{old_name}}</p>
+                    <p>{{old_surname}}</p>
+                    <p>{{old_middle_name}}</p>
                 </div>
-            {{/form}}
+            </div>
             <div class="tileDive tileDive2">
                 <img src="/images/status.png" alt="document status">
                 <p>Статус бланка</p>
                 <div>
-                    <p>{{status}}</p>
+                    <p>{{old_status}}</p>
                 </div>
             </div>
         </div>

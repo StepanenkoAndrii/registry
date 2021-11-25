@@ -79,7 +79,7 @@ class FormRepository {
     };
 
     async getAllLogs() {
-        return await db.query(`select form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
+        return await db.query(`select (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
         inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
         inner join (select id, type from types) as types on logs.type_id = types.id
         inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data`);
@@ -97,7 +97,7 @@ class FormRepository {
         if (type.toString().length === 0) boolType = true;
 
         return await db.query(`select * from 
-        (select form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, 
+        (select (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, 
         number, series, type, login from (select * from logs
         inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
         inner join (select id, type from types) as types on logs.type_id = types.id
@@ -108,9 +108,23 @@ class FormRepository {
     };
 
     async deleteForm(id) {
-        await  db.query(`delete from logs where (form_id = ${id})`);
+        await db.query(`delete from logs where (form_id = ${id})`);
         return await db.query(`delete from forms where (id = ${id})`);
     };
+
+    async getLogById(id) {
+        return await db.query(`select * from 
+        (select (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id,
+        (select name from persons where (id = 2)) as old_name, (select surname from persons where (id = 2)) as old_surname, 
+        (select middle_name from persons where (id = 2)) as old_middle_name, (select status from form_statuses where (id = 1)) as old_status, 
+        (select name from persons where (id in (select person_id from forms where id = 11))) as name,
+        (select surname from persons where (id in (select person_id from forms where id = 11))) as surname,
+        (select middle_name from persons where (id in (select person_id from forms where id = 11))) as middle_name,
+        number, series, type, login from (select * from logs
+        inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
+        inner join (select id, type from types) as types on logs.type_id = types.id
+        inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data) as a`);
+    }
 }
 
 module.exports = FormRepository;

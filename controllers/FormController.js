@@ -156,7 +156,18 @@ module.exports = {
         const types = await formRepository.getTypes();
         const currentPerson = await formRepository.getCurrentPerson();
         res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows, isEdited: false});
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows});
+    },
+
+    async deactivateUpdate(req, res) {
+        const log = await formRepository.getLogById(req.params.id);
+
+        const form = await formRepository.getFormById(req.params.id);
+        const logs = await formRepository.getAllLogs();
+        const types = await formRepository.getTypes();
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('declineUpdate', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows});
     },
 
 }

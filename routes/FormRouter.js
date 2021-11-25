@@ -6,6 +6,7 @@ router.get('/profile/:id', formController.getUserById);
 router.get('/activate/:id', formController.activateRegistrator);
 router.get('/deactivate/:id', formController.deactivateRegistrator);
 router.get('/created/:id', formController.deactivateCreation);
+router.get('/updated/:id', formController.deactivateUpdate);
 router.get('/allLogs', formController.getAllLogs);
 router.get('/filteredLogs', formController.getFilteredLogs);
 router.get('/new', formController.getFormsData);
