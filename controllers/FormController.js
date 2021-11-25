@@ -70,6 +70,8 @@ module.exports = {
         const newForm = await formRepository.addForm(req.body);
         // await this.getForms;
         if (!newForm) return;
+        console.log(newForm);
+        const log = await formRepository.addCreationLog(newForm.rows[0]);
         const forms = await formRepository.getForms();
         const currentPerson = await formRepository.getCurrentPerson();
         if (currentPerson.rowCount === 0) {
@@ -82,6 +84,7 @@ module.exports = {
 
     async updateForm(req, res) {
         const updatedForm = await formRepository.editForm(req.body, req.params.id);
+        // const log = await formRepository.addUpdateLog(updatedForm.rows[0]);
         const form = await formRepository.getFormById(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();
         if (currentPerson.rowCount === 0) {
@@ -160,14 +163,19 @@ module.exports = {
     },
 
     async deactivateUpdate(req, res) {
-        const log = await formRepository.getLogById(req.params.id);
+        const data = await formRepository.getDataByLogId(req.params.id);
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('declineUpdate', {data: data.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
+    },
 
-        const form = await formRepository.getFormById(req.params.id);
+    async updateLogForm(req, res) {
+        console.log(req.body);
+        const updatedForm = await formRepository.editLogForm(req.body, req.params.id);
         const logs = await formRepository.getAllLogs();
         const types = await formRepository.getTypes();
         const currentPerson = await formRepository.getCurrentPerson();
-        res.render('declineUpdate', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('logs', {logs: logs.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", types: types.rows});
     },
-
 }

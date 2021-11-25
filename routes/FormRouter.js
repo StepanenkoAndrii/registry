@@ -19,5 +19,6 @@ router.get('/', formController.getHomePage);
 router.post('/', formController.addForm);
 router.post('/:id/edit', formController.updateForm);
 router.post('/:id/delete', formController.deleteForm);
+router.post('/:id/update', formController.updateLogForm);
 
 module.exports = router;

@@ -50,16 +50,30 @@ class FormRepository {
     };
 
     async addForm(formData) {
-        return await db.query(`insert into forms(number, series, usage_date, person_id, status_id) values (${formData.number}, 
+        await db.query(`insert into forms(number, series, usage_date, person_id, status_id) values (${formData.number}, 
         ${formData.series}, '${formData.usage_date.toString()}', (select id from persons where (login = '${formData.login.toString()}')),
         (select id from form_statuses where (status = '${formData.status.toString()}'))
         )`);
+        return db.query(`select id, number, series, to_char(usage_date, 'YYYY-MM-DD') as usage_date, person_id, status_id
+        from forms order by id desc limit 1`);
     };
 
     async editForm(formData, id) {
         return await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = '${formData.usage_date.toString()}', 
         person_id = (select id from persons where (login = '${formData.login.toString()}')),
         status_id = (select id from form_statuses where (status = '${formData.status.toString()}')) where (id = ${id})`);
+    };
+
+    async editLogForm(formData, id) {
+        return await db.query(`update forms set number = ${formData.old_number}, series = ${formData.old_series}, 
+        usage_date = '${formData.old_usage_date.toString()}', person_id = '${formData.old_person_id}',
+        status_id = ${formData.old_status_id} where (id = ${id})`);
+    };
+
+    async editLogForm(formData, id) {
+        return await db.query(`update forms set number = ${formData.old_number}, series = ${formData.old_series}, 
+        usage_date = '${formData.old_usage_date.toString()}', person_id = '${formData.old_person_id}',
+        status_id = ${formData.old_status_id} where (id = ${id})`);
     };
 
     async getUserById(id) {
@@ -79,10 +93,10 @@ class FormRepository {
     };
 
     async getAllLogs() {
-        return await db.query(`select (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
-        inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
-        inner join (select id, type from types) as types on logs.type_id = types.id
-        inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data`);
+        return await db.query(`select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
+        inner join (select id as ida, number, series from forms) as forms on logs.form_id = forms.ida
+        inner join (select id as idb, type from types) as types on logs.type_id = types.idb
+        inner join (select id as idc, login from persons) as persons on logs.person_id = persons.idc) as all_data`);
     };
 
     async getTypes() {
@@ -97,11 +111,11 @@ class FormRepository {
         if (type.toString().length === 0) boolType = true;
 
         return await db.query(`select * from 
-        (select (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, 
+        (select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, 
         number, series, type, login from (select * from logs
-        inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
-        inner join (select id, type from types) as types on logs.type_id = types.id
-        inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data) as a
+        inner join (select id as ida, number, series from forms) as forms on logs.form_id = forms.ida
+        inner join (select id as idb, type from types) as types on logs.type_id = types.idb
+        inner join (select id as idc, login from persons) as persons on logs.person_id = persons.idc) as all_data) as a
         where ((${boolDate} or date = '${date.toString()}')
         and (login like '%${login.toString()}%')
         and (${boolType} or (type = '${type}')))`);
@@ -112,19 +126,32 @@ class FormRepository {
         return await db.query(`delete from forms where (id = ${id})`);
     };
 
-    async getLogById(id) {
+    async getDataByLogId(id) {
         return await db.query(`select * from 
-        (select (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id,
-        (select name from persons where (id = 2)) as old_name, (select surname from persons where (id = 2)) as old_surname, 
-        (select middle_name from persons where (id = 2)) as old_middle_name, (select status from form_statuses where (id = 1)) as old_status, 
-        (select name from persons where (id in (select person_id from forms where id = 11))) as name,
-        (select surname from persons where (id in (select person_id from forms where id = 11))) as surname,
-        (select middle_name from persons where (id in (select person_id from forms where id = 11))) as middle_name,
+        (select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, 
+        to_char(old_usage_date, 'YYYY-MM-DD') as old_usage_date, old_status_id, old_person_id,
+        (select name from persons where (id = old_person_id)) as old_name, (select surname from persons where (id = old_person_id)) as old_surname, 
+        (select middle_name from persons where (id = old_person_id)) as old_middle_name, (select status from form_statuses where (id = old_status_id)) as old_status, 
+        (select name from persons where (id in (select person_id from forms where id = form_id))) as name,
+        (select surname from persons where (id in (select person_id from forms where id = form_id))) as surname,
+        (select middle_name from persons where (id in (select person_id from forms where id = form_id))) as middle_name,
+        (select status from form_statuses where (id = (select status_id from forms where (id = form_id)))) as status,
         number, series, type, login from (select * from logs
-        inner join (select id, number, series from forms) as forms on logs.form_id = forms.id
-        inner join (select id, type from types) as types on logs.type_id = types.id
-        inner join (select id, login from persons) as persons on logs.person_id = persons.id) as all_data) as a`);
-    }
+        inner join (select id as ida, number, series from forms) as forms on logs.form_id = forms.ida
+        inner join (select id as idb, type from types) as types on logs.type_id = types.idb
+        inner join (select id as idc, login from persons) as persons on logs.person_id = persons.idc) as all_data) as a
+        where id = ${id}`);
+    };
+
+    async addCreationLog(data) {
+        return await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
+        values (1, ${data.id}, ${data.person_id}, '${data.usage_date.toString()}', null, null, null, null, null)`);
+    };
+
+    async addUpdateLog(data) {
+        return await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
+        values (2, ${data.id}, ${data.person_id}, '${data.usage_date.toString()}', ${data.old_number}, ${data.old_series}, ${data.old_usage_date}, ${data.old_status_id}, ${data.old_person_id})`);
+    };
 }
 
 module.exports = FormRepository;
