@@ -56,6 +56,7 @@
                         <p>Серія</p>
                         <div>
                             <input class="seriesInput" type="number" placeholder="0" name="series" value="{{series}}"/>
+                            <input name="old_series" value="{{series}}" type="hidden">
                         </div>
                     </div>
                     <div class="tileDive">
@@ -63,6 +64,7 @@
                         <p>Номер</p>
                         <div>
                             <input class="numberInput" type="number" placeholder="0" name="number" value="{{number}}"/>
+                            <input name="old_number" value="{{number}}" type="hidden">
                         </div>
                     </div>
                     <div class="tileDive">
@@ -71,6 +73,7 @@
                         <div>
                             <!--                        <p>{usage_date}}</p>-->
                             <input class="dateInput" type="date" name="usage_date" value="{{usage_date}}"/>
+                            <input name="old_usage_date" value="{{usage_date}}" type="hidden">
                         </div>
                     </div>
                     <div class="tileDive bigDiv">
@@ -83,6 +86,7 @@
                                     <option value="{{login}}">{{login}}</option>
                                 {{/logins}}
                             </select>
+                            <input name="old_login" value="{{login}}" type="hidden">
                         </div>
                     </div>
                     <div class="tileDive tileDive2">
@@ -95,6 +99,7 @@
                                     <option value="{{status}}">{{status}}</option>
                                 {{/statuses}}
                             </select>
+                            <input name="old_status" value="{{status}}" type="hidden">
                         </div>
                     </div>
                     <div>

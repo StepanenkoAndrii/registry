@@ -51,7 +51,6 @@ module.exports = {
 
     async getHomePage(req, res) {
         const currentPerson = await formRepository.getCurrentPerson();
-        // console.log(currentPerson);
         if (currentPerson.rowCount === 0) {
             res.render('home', {login: "", role: ""});
             return;
@@ -60,7 +59,6 @@ module.exports = {
     },
 
     async getFormsData(req, res) {
-        // console.log("here");
         const logins = await formRepository.getLogins();
         const statuses = await formRepository.getStatuses();
         res.render('newForm', {logins: logins.rows, statuses: statuses.rows});
@@ -70,7 +68,6 @@ module.exports = {
         const newForm = await formRepository.addForm(req.body);
         // await this.getForms;
         if (!newForm) return;
-        console.log(newForm);
         const log = await formRepository.addCreationLog(newForm.rows[0]);
         const forms = await formRepository.getForms();
         const currentPerson = await formRepository.getCurrentPerson();
@@ -84,7 +81,7 @@ module.exports = {
 
     async updateForm(req, res) {
         const updatedForm = await formRepository.editForm(req.body, req.params.id);
-        // const log = await formRepository.addUpdateLog(updatedForm.rows[0]);
+        const log = await formRepository.addUpdateLog(updatedForm.rows[0]);
         const form = await formRepository.getFormById(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();
         if (currentPerson.rowCount === 0) {
@@ -170,7 +167,6 @@ module.exports = {
     },
 
     async updateLogForm(req, res) {
-        console.log(req.body);
         const updatedForm = await formRepository.editLogForm(req.body, req.params.id);
         const logs = await formRepository.getAllLogs();
         const types = await formRepository.getTypes();

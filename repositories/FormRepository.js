@@ -1,4 +1,5 @@
 const db = require('../db');
+const moment = require('moment');
 
 class FormRepository {
     async getForms() {
@@ -59,15 +60,20 @@ class FormRepository {
     };
 
     async editForm(formData, id) {
-        return await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = '${formData.usage_date.toString()}', 
+        await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = '${formData.usage_date.toString()}', 
         person_id = (select id from persons where (login = '${formData.login.toString()}')),
         status_id = (select id from form_statuses where (status = '${formData.status.toString()}')) where (id = ${id})`);
-    };
 
-    async editLogForm(formData, id) {
-        return await db.query(`update forms set number = ${formData.old_number}, series = ${formData.old_series}, 
-        usage_date = '${formData.old_usage_date.toString()}', person_id = '${formData.old_person_id}',
-        status_id = ${formData.old_status_id} where (id = ${id})`);
+        await db.query(`create table temp as (select id, number, series, usage_date, person_id, status_id from forms where (id = ${id}));
+        alter table temp add column temp_id serial primary key, add column old_number int, add column old_series int, add column old_usage_date date, add column old_status text, 
+        add column old_login text, add column update_date date;
+        update temp set old_number = ${formData.old_number}, old_series = ${formData.old_series}, old_usage_date = '${formData.old_usage_date.toString()}',
+        old_status = '${formData.old_status.toString()}', old_login = '${formData.old_login.toString()}', update_date = '${moment().format('L').toString()}'`);
+
+        const temp = await db.query(`select * from temp`);
+
+        return await db.query(`select id, number, series, to_char(usage_date, 'YYYY-MM-DD') as usage_date, person_id, status_id,
+        old_number, old_series, to_char(old_usage_date, 'YYYY-MM-DD') as old_usage_date, old_status, old_login, to_char(update_date, 'YYYY-MM-DD') as update_date from temp where (temp_id = ${temp.rows[0].temp_id})`);
     };
 
     async editLogForm(formData, id) {
@@ -149,8 +155,11 @@ class FormRepository {
     };
 
     async addUpdateLog(data) {
-        return await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
-        values (2, ${data.id}, ${data.person_id}, '${data.usage_date.toString()}', ${data.old_number}, ${data.old_series}, ${data.old_usage_date}, ${data.old_status_id}, ${data.old_person_id})`);
+        await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
+        values (2, ${data.id}, ${data.person_id}, '${data.update_date.toString()}', ${data.old_number}, ${data.old_series}, '${data.old_usage_date.toString()}', 
+        (select id from form_statuses where (status = '${data.old_status.toString()}')), 
+        (select id from persons where (login = '${data.old_login.toString()}')))`);
+        return await db.query(`drop table temp`);
     };
 }
 
