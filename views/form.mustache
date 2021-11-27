@@ -53,37 +53,38 @@
     </div>
     <div class="rightPartMainDiv">
         {{#form}}
-        <form action="/forms/{{id}}/delete/" , method="POST" , enctype="multipart/form-data">
-            <div class="filtersMainDiv">
-                <div class="tileDive">
-                    <img src="/images/calendar.png" alt="date of usage">
-                    <p>Дата використання</p>
-                    <div>
-                        <p>{{usage_date}}</p>
+            <form action="/forms/{{id}}/delete/" , method="POST" , enctype="multipart/form-data">
+                <div class="filtersMainDiv">
+                    <div class="tileDive">
+                        <img src="/images/calendar.png" alt="date of usage">
+                        <p>Дата використання</p>
+                        <div>
+                            <p>{{date}}</p>
+                        </div>
                     </div>
+                    <div class="tileDive bigDiv">
+                        <img src="/images/register.png" alt="registered on">
+                        <p>Зареєстровано на</p>
+                        <div class="initialsDiv">
+                            <p>{{name}}</p>
+                            <p>{{surname}}</p>
+                            <p>{{middle_name}}</p>
+                        </div>
+                    </div>
+                    <div class="tileDive tileDive2">
+                        <img src="/images/status.png" alt="document status">
+                        <p>Статус бланка</p>
+                        <div>
+                            <p>{{status}}</p>
+                        </div>
+                    </div>
+                    {{#visible}}
+                        <div>
+                            <input type="submit" value="Скасувати створення бланка" id="bigInput">
+                        </div>
+                    {{/visible}}
                 </div>
-                <div class="tileDive bigDiv">
-                    <img src="/images/register.png" alt="registered on">
-                    <p>Зареєстровано на</p>
-                    <div class="initialsDiv">
-                        <p>{{name}}</p>
-                        <p>{{surname}}</p>
-                        <p>{{middle_name}}</p>
-                    </div>
-                </div>
-                <div class="tileDive tileDive2">
-                    <img src="/images/status.png" alt="document status">
-                    <p>Статус бланка</p>
-                    <div>
-                        <p>{{status}}</p>
-                    </div>
-                </div>
-                {{#visible}}
-                    <div>
-                        <input type="submit" value="Скасувати створення бланка" id="bigInput">
-                    </div>
-                {{/visible}}
-            </div>
+            </form>
         {{/form}}
     </div>
 </div>

@@ -32,7 +32,7 @@ class FormRepository {
 
     async getFormById(id) {
         return await db.query(`select forms.id, number, series, to_char(usage_date, 'YYYY-MM-DD') as usage_date, name, 
-        surname, middle_name, status from 
+        surname, middle_name, login, status from 
 	    forms inner join persons on forms.person_id = persons.id 
 	    inner join form_statuses on forms.status_id = form_statuses.id 
 	    where forms.id = ${id}`);
@@ -52,7 +52,7 @@ class FormRepository {
 
     async addForm(formData) {
         await db.query(`insert into forms(number, series, usage_date, person_id, status_id) values (${formData.number}, 
-        ${formData.series}, '${formData.usage_date.toString()}', (select id from persons where (login = '${formData.login.toString()}')),
+        ${formData.series}, null, (select id from persons where (login = '${formData.login.toString()}')),
         (select id from form_statuses where (status = '${formData.status.toString()}'))
         )`);
         return db.query(`select id, number, series, to_char(usage_date, 'YYYY-MM-DD') as usage_date, person_id, status_id
@@ -60,15 +60,34 @@ class FormRepository {
     };
 
     async editForm(formData, id) {
-        await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = '${formData.usage_date.toString()}', 
-        person_id = (select id from persons where (login = '${formData.login.toString()}')),
-        status_id = (select id from form_statuses where (status = '${formData.status.toString()}')) where (id = ${id})`);
+        const usage_date = (formData.usage_date !== null && formData.usage_date !== undefined && formData.usage_date.toString() !== "") ? formData.usage_date.toString() : null;
+        const old_usage_date = (formData.old_usage_date !== null && formData.old_usage_date !== undefined && formData.old_usage_date.toString() !== "") ? formData.old_usage_date.toString() : null;
 
-        await db.query(`create table temp as (select id, number, series, usage_date, person_id, status_id from forms where (id = ${id}));
-        alter table temp add column temp_id serial primary key, add column old_number int, add column old_series int, add column old_usage_date date, add column old_status text, 
-        add column old_login text, add column update_date date;
-        update temp set old_number = ${formData.old_number}, old_series = ${formData.old_series}, old_usage_date = '${formData.old_usage_date.toString()}',
-        old_status = '${formData.old_status.toString()}', old_login = '${formData.old_login.toString()}', update_date = '${moment().format('L').toString()}'`);
+        if (usage_date === null) {
+            await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = null,
+            person_id = (select id from persons where (login = '${formData.login.toString()}')),
+            status_id = (select id from form_statuses where (status = '${formData.status.toString()}')) where (id = ${id})`);
+        }
+        else {
+            await db.query(`update forms set number = ${formData.number}, series = ${formData.series}, usage_date = '${usage_date}',
+            person_id = (select id from persons where (login = '${formData.login.toString()}')),
+            status_id = (select id from form_statuses where (status = '${formData.status.toString()}')) where (id = ${id})`);
+        }
+
+        if (old_usage_date === null) {
+            await db.query(`create table temp as (select id, number, series, usage_date, person_id, status_id from forms where (id = ${id}));
+            alter table temp add column temp_id serial primary key, add column old_number int, add column old_series int, add column old_usage_date date, add column old_status text,
+            add column old_login text, add column update_date date;
+            update temp set old_number = ${formData.old_number}, old_series = ${formData.old_series}, old_usage_date = null,
+            old_status = '${formData.old_status.toString()}', old_login = '${formData.old_login.toString()}', update_date = '${moment().format('L').toString()}'`);
+        }
+        else {
+            await db.query(`create table temp as (select id, number, series, usage_date, person_id, status_id from forms where (id = ${id}));
+            alter table temp add column temp_id serial primary key, add column old_number int, add column old_series int, add column old_usage_date date, add column old_status text,
+            add column old_login text, add column update_date date;
+            update temp set old_number = ${formData.old_number}, old_series = ${formData.old_series}, old_usage_date = '${old_usage_date}',
+            old_status = '${formData.old_status.toString()}', old_login = '${formData.old_login.toString()}', update_date = '${moment().format('L').toString()}'`);
+        }
 
         const temp = await db.query(`select * from temp`);
 
@@ -77,9 +96,19 @@ class FormRepository {
     };
 
     async editLogForm(formData, id) {
-        return await db.query(`update forms set number = ${formData.old_number}, series = ${formData.old_series}, 
-        usage_date = '${formData.old_usage_date.toString()}', person_id = '${formData.old_person_id}',
-        status_id = ${formData.old_status_id} where (id = ${id})`);
+        const old_usage_date = (formData.old_usage_date !== null && formData.old_usage_date !== undefined && formData.old_usage_date.toString() !== "") ? formData.old_usage_date.toString() : null;
+
+        if (old_usage_date === null) {
+            return await db.query(`update forms set number = ${formData.old_number}, series = ${formData.old_series}, 
+            usage_date = null, person_id = '${formData.old_person_id}',
+            status_id = ${formData.old_status_id} where (id = ${id})`);
+        }
+        else {
+            return await db.query(`update forms set number = ${formData.old_number}, series = ${formData.old_series}, 
+            usage_date = '${old_usage_date}', person_id = '${formData.old_person_id}',
+            status_id = ${formData.old_status_id} where (id = ${id})`);
+        }
+
     };
 
     async getUserById(id) {
@@ -99,10 +128,11 @@ class FormRepository {
     };
 
     async getAllLogs() {
-        return await db.query(`select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
+        return await db.query(`select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, 
+        old_number, old_series, old_usage_date, old_status_id, number, series, type, login from (select * from logs
         inner join (select id as ida, number, series from forms) as forms on logs.form_id = forms.ida
         inner join (select id as idb, type from types) as types on logs.type_id = types.idb
-        inner join (select id as idc, login from persons) as persons on logs.person_id = persons.idc) as all_data`);
+        inner join (select id as idc, login from persons) as persons on logs.person_id = persons.idc) as all_data order by date desc`);
     };
 
     async getTypes() {
@@ -134,7 +164,8 @@ class FormRepository {
 
     async getDataByLogId(id) {
         return await db.query(`select * from 
-        (select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, old_number, old_series, 
+        (select id, idc, (type_id = 2) as is_edited, form_id, to_char(date, 'YYYY-MM-DD') as date, 
+        (select to_char(usage_date, 'YYYY-MM-DD') as usage_date from forms where (id = form_id)), old_number, old_series, 
         to_char(old_usage_date, 'YYYY-MM-DD') as old_usage_date, old_status_id, old_person_id,
         (select name from persons where (id = old_person_id)) as old_name, (select surname from persons where (id = old_person_id)) as old_surname, 
         (select middle_name from persons where (id = old_person_id)) as old_middle_name, (select status from form_statuses where (id = old_status_id)) as old_status, 
@@ -151,14 +182,25 @@ class FormRepository {
 
     async addCreationLog(data) {
         return await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
-        values (1, ${data.id}, ${data.person_id}, '${data.usage_date.toString()}', null, null, null, null, null)`);
+        values (1, ${data.id}, ${data.person_id}, null, null, null, null, null, null)`);
     };
 
     async addUpdateLog(data) {
-        await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
-        values (2, ${data.id}, ${data.person_id}, '${data.update_date.toString()}', ${data.old_number}, ${data.old_series}, '${data.old_usage_date.toString()}', 
-        (select id from form_statuses where (status = '${data.old_status.toString()}')), 
-        (select id from persons where (login = '${data.old_login.toString()}')))`);
+        const old_usage_date = (data.old_usage_date !== null && data.old_usage_date !== undefined) ? data.old_usage_date.toString() : null;
+
+        if (old_usage_date === null) {
+            await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
+            values (2, ${data.id}, ${data.person_id}, '${data.update_date.toString()}', ${data.old_number}, ${data.old_series}, null, 
+            (select id from form_statuses where (status = '${data.old_status.toString()}')), 
+            (select id from persons where (login = '${data.old_login.toString()}')))`);
+        }
+        else {
+            await db.query(`insert into logs (type_id, form_id, person_id, date, old_number, old_series, old_usage_date, old_status_id, old_person_id) 
+            values (2, ${data.id}, ${data.person_id}, '${data.update_date.toString()}', ${data.old_number}, ${data.old_series}, '${old_usage_date}', 
+            (select id from form_statuses where (status = '${data.old_status.toString()}')), 
+            (select id from persons where (login = '${data.old_login.toString()}')))`);
+        }
+
         return await db.query(`drop table temp`);
     };
 }

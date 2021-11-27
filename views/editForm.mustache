@@ -42,8 +42,6 @@
                 <div>
                     <div>
                         <img src="/images/document.png" alt="document">
-                        <!--                        <p class="firstP">Бланк&nbsp;&nbsp;№{number}}</p>-->
-                        <!--                        <p>Серія&nbsp;&nbsp;№{series}}</p>-->
                     </div>
                 </div>
             {{/form}}
@@ -59,6 +57,8 @@
                         <div>
                             <input class="seriesInput" type="number" placeholder="0" name="series" value="{{series}}"/>
                             <input name="old_series" value="{{series}}" type="hidden">
+                            <input name="login" value="{{form_login}}" type="hidden">
+                            <input name="old_login" value="{{form_login}}" type="hidden">
                         </div>
                     </div>
                     <div class="tileDive">
@@ -73,22 +73,10 @@
                         <img src="/images/calendar.png" alt="date of usage">
                         <p>Дата використання</p>
                         <div>
-                            <!--                        <p>{usage_date}}</p>-->
                             <input class="dateInput" type="date" name="usage_date" value="{{usage_date}}"/>
+                            {{#old_date_exists}}
                             <input name="old_usage_date" value="{{usage_date}}" type="hidden">
-                        </div>
-                    </div>
-                    <div class="tileDive bigDiv">
-                        <img src="/images/register.png" alt="registered on">
-                        <p>Зареєстровано на</p>
-                        <div class="initialsDiv">
-                            <select class="statusInput" name="login">
-                                <option value="">-- логін --</option>
-                                {{#logins}}
-                                    <option value="{{login}}">{{login}}</option>
-                                {{/logins}}
-                            </select>
-                            <input name="old_login" value="{{login}}" type="hidden">
+                            {{/old_date_exists}}
                         </div>
                     </div>
                     <div class="tileDive tileDive2">

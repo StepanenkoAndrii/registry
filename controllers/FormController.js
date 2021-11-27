@@ -33,20 +33,16 @@ module.exports = {
             return;
         }
         res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор", visible: false});
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", visible: false, date: form.rows[0].usage_date !== null ? form.rows[0].usage_date : "Бланк ще не використано"});
     },
 
     async getEditFormById(req, res) {
         const form = await formRepository.getFormById(req.params.id);
-        const logins = await formRepository.getLogins();
         const statuses = await formRepository.getStatuses();
         const currentPerson = await formRepository.getCurrentPerson();
-        if (currentPerson.rowCount === 0) {
-            res.render('editForm', {form: form.rows[0], login: "", role: "", isRegistrator: false});
-            return;
-        }
+        console.log(form.rows[0]);
         res.render('editForm', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор", logins: logins.rows, statuses: statuses.rows});
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", statuses: statuses.rows, old_date_exists: form.rows[0].usage_date !== null, form_login: form.rows[0].login});
     },
 
     async getHomePage(req, res) {
@@ -59,9 +55,8 @@ module.exports = {
     },
 
     async getFormsData(req, res) {
-        const logins = await formRepository.getLogins();
-        const statuses = await formRepository.getStatuses();
-        res.render('newForm', {logins: logins.rows, statuses: statuses.rows});
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('newForm', {login: currentPerson.rows[0].login});
     },
 
     async addForm(req, res) {
@@ -83,13 +78,7 @@ module.exports = {
         const updatedForm = await formRepository.editForm(req.body, req.params.id);
         const log = await formRepository.addUpdateLog(updatedForm.rows[0]);
         const form = await formRepository.getFormById(req.params.id);
-        const currentPerson = await formRepository.getCurrentPerson();
-        if (currentPerson.rowCount === 0) {
-            res.render('form', {form: form.rows[0], login: "", role: "", isRegistrator: false});
-            return;
-        }
-        res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
+        res.redirect(`/forms/${form.rows[0].id}`);
     },
 
     async getUserById(req, res) {
@@ -148,7 +137,7 @@ module.exports = {
     async deactivateCreation(req, res) {
         const form = await formRepository.getFormById(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();
-        res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
+        res.render('form', {form: form.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
             isRegistrator: currentPerson.rows[0].role === "Реєстратор", visible: true});
     },
 
@@ -164,8 +153,10 @@ module.exports = {
     async deactivateUpdate(req, res) {
         const data = await formRepository.getDataByLogId(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();
-        res.render('declineUpdate', {data: data.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role,
-            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
+        console.log(data.rows[0]);
+        res.render('declineUpdate', {data: data.rows[0], login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор", new_date: data.rows[0].usage_date !== null ? data.rows[0].usage_date : "Бланк ще не використано",
+            old_date: data.rows[0].old_usage_date !== null ? data.rows[0].old_usage_date : "Бланк ще не використано"});
     },
 
     async updateLogForm(req, res) {

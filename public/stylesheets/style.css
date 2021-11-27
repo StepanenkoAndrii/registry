@@ -704,3 +704,9 @@ a {
 #fullHeight {
     height: 100%;
 }
+
+#newFormImg {
+    display: block;
+    margin: auto;
+    width: 200px;
+}
