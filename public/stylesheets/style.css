@@ -710,3 +710,17 @@ a {
     margin: auto;
     width: 200px;
 }
+
+#noFlexDiv {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#noFlexDiv p {
+    margin-top: 10px;
+}
+
+#noFlexDiv p:first-of-type {
+    margin-top: 0;
+}

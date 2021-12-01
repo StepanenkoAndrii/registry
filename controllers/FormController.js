@@ -95,6 +95,13 @@ module.exports = {
             isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
     },
 
+    async getFilteredRegistrators(req, res) {
+        const registrators = await formRepository.getFilteredRegistrators(req.query);
+        const currentPerson = await formRepository.getCurrentPerson();
+        res.render('registrators', {registrators: registrators.rows, login: currentPerson.rows[0].login, role: currentPerson.rows[0].role, id: currentPerson.rows[0].id,
+            isRegistrator: currentPerson.rows[0].role === "Реєстратор"});
+    },
+
     async viewRegistrator(req, res) {
         const user = await formRepository.getUserById(req.params.id);
         const currentPerson = await formRepository.getCurrentPerson();

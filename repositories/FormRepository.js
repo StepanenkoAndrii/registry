@@ -19,9 +19,9 @@ class FormRepository {
             `(cast(number as text) like '%${number.toString()}%') and \n` +
             `(person_id in (\n` +
             `select id from persons where (\n` +
-            `(name like '%${name.toString()}%') and \n` +
-            `(surname like '%${surname.toString()}%') and \n` +
-            `(middle_name like '%${middle_name.toString()}%')\n` +
+            `(name ilike '%${name.toString()}%') and \n` +
+            `(surname ilike '%${surname.toString()}%') and \n` +
+            `(middle_name ilike '%${middle_name.toString()}%')\n` +
             `)\n` +
             `)) and\n` +
             `(${boolStatus} or (status_id in (\n` +
@@ -119,6 +119,12 @@ class FormRepository {
         return await db.query(`select * from persons where (role = 'Реєстратор')`);
     };
 
+    async getFilteredRegistrators(data) {
+        return await db.query(`select * from persons where ((role = 'Реєстратор') and (login ilike '%${data.login.toString()}%') and 
+		(name ilike '%${data.name.toString()}%') and (surname ilike '%${data.surname.toString()}%') and 
+		(middle_name ilike '%${data.middle_name.toString()}%') and (email ilike '%${data.email.toString()}%'))`);
+    };
+
     async activateRegistrator(id) {
         return await db.query(`update persons set is_active = true where (id = ${id})`);
     };
@@ -153,7 +159,7 @@ class FormRepository {
         inner join (select id as idb, type from types) as types on logs.type_id = types.idb
         inner join (select id as idc, login from persons) as persons on logs.person_id = persons.idc) as all_data) as a
         where ((${boolDate} or date = '${date.toString()}')
-        and (login like '%${login.toString()}%')
+        and (login ilike '%${login.toString()}%')
         and (${boolType} or (type = '${type}')))`);
     };
 

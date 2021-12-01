@@ -11,15 +11,16 @@
     </div>
 </div>
 <div class="mainDiv">
-    <div class="rightPartMainDiv" id="withoutLineDiv">
+    <div class="leftPartMainDiv" id="withoutLineDiv">
         <p class="mainListP">Перегляд Реєстраторів</p>
         <div class="scrollableDocsDiv" id="style-1">
             {{#registrators}}
                 <div>
                     <a href="/forms/viewRegistrator/{{id}}">
-                        <div>
-                            <p>&nbsp;&nbsp;{{login}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{email}}</p>
+                        <div id="noFlexDiv">
+                            <p>Логін:&nbsp;&nbsp;&nbsp;{{login}}</p>
+                            <p>Пошта:&nbsp;&nbsp;&nbsp;{{email}}</p>
+                            <p>ПІБ:&nbsp;&nbsp;&nbsp;{{surname}}&nbsp;&nbsp;{{name}}&nbsp;&nbsp;{{middle_name}}</p>
                         </div>
                     </a>
                 </div>
@@ -28,6 +29,40 @@
                 <p class="mainListP borderedP">Реєстраторів не знайдено</p>
             {{/registrators}}
         </div>
+    </div>
+    <div class="rightPartMainDiv">
+        <p class="mainListP">Пошук (фільтрація)</p>
+        <form action="/filteredRegistrators" , method="GET" , enctype="multipart/form-data">
+            <div class="filtersMainDiv">
+                <div class="tileDive">
+                    <img src="/images/user.png" alt="user">
+                    <p>Логін</p>
+                    <div>
+                        <input class="loginInput" type="text" placeholder="Somebody111" name="login"/>
+                    </div>
+                </div>
+                <div class="tileDive bigDiv">
+                    <img src="/images/register.png" alt="registered on">
+                    <p>ПІБ</p>
+                    <div class="initialsDiv">
+                        <input class="registeredOnInput" type="text" placeholder="Ім'я: Іван" name="name"/>
+                        <input class="registeredOnInput" type="text" placeholder="Прізвище: Іванов" name="surname"/>
+                        <input class="registeredOnInput" type="text" placeholder="По-батькові: Іванович"
+                               name="middle_name"/>
+                    </div>
+                </div>
+                <div class="tileDive">
+                    <img src="/images/email.png" alt="email">
+                    <p>Пошта</p>
+                    <div>
+                        <input class="textInput" type="text" placeholder="someone111@gmail.com" name="email"/>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="Пошук">
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 {{> footer}}

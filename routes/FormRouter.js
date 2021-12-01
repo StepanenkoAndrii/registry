@@ -13,6 +13,7 @@ router.get('/new', formController.getFormsData);
 router.get('/all', formController.getForms);
 router.get('/filtered', formController.getFilteredForms);
 router.get('/registrators', formController.getRegistrators);
+router.get('/filteredRegistrators', formController.getFilteredRegistrators);
 router.get('/:id', formController.getFormById);
 router.get('/:id/edit', formController.getEditFormById);
 router.get('/', formController.getHomePage);
