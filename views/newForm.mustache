@@ -15,13 +15,6 @@
         <p class="mainListP">Новий бланк</p>
         <form action="/forms" , method="POST" , enctype="multipart/form-data">
             <div class="filtersMainDiv">
-<!--                <div class="tileDive">-->
-<!--                    <img src="/images/calendar.png" alt="date of usage">-->
-<!--                    <p>Дата використання</p>-->
-<!--                    <div>-->
-<!--                        <input class="dateInput" type="date" name="usage_date"/>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <img id="newFormImg" src="/images/document.png" alt="document">
                 <div class="tileDive">
                     <img src="/images/series.png" alt="series">
@@ -40,30 +33,6 @@
                         <input class="numberInput" type="number" placeholder="0" name="number"/>
                     </div>
                 </div>
-<!--                <div class="tileDive">-->
-<!--                    <img src="/images/user.png" alt="person">-->
-<!--                    <p>На кого зарестровано бланк</p>-->
-<!--                    <div>-->
-<!--                        <select class="statusInput" name="login">-->
-<!--                            <option value="">-- логін --</option>-->
-<!--                            {#logins}}-->
-<!--                                <option value="{login}}">{login}}</option>-->
-<!--                            {/logins}}-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="tileDive">-->
-<!--                    <img src="/images/status.png" alt="document status">-->
-<!--                    <p>Статус бланка</p>-->
-<!--                    <div>-->
-<!--                        <select class="statusInput" name="status">-->
-<!--                            <option value="">-- статус --</option>-->
-<!--                            {#statuses}}-->
-<!--                                <option value="{status}}">{status}}</option>-->
-<!--                            {/statuses}}-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div>
                     <input type="submit" value="Додати">
                 </div>
@@ -73,10 +42,4 @@
 </div>
 {{> footer}}
 </body>
-<!--<script>-->
-<!--    window.onload(() => {-->
-<!--        document.getElementById("userDataP").innerHTML = JSON.parse(localStorage.getItem("user")).role + ": " + JSON.parse(localStorage.getItem("user")).login-->
-<!--    })-->
-<!--</script>-->
-<!--<script src="/javascripts/registration.js"></script>-->
 </html>

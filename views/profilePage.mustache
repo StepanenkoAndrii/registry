@@ -5,9 +5,16 @@
 {{> header}}
 <div class="menuDiv leftDiv">
     <div class="authImgDiv">
-        <a href="/">
+        {{#isRegOnPage}}
+        <a href="/registrators">
             <img id="backImg" src="/images/back.png" alt="back">
         </a>
+        {{/isRegOnPage}}
+        {{^isRegOnPage}}
+            <a href="/">
+                <img id="backImg" src="/images/back.png" alt="back">
+            </a>
+        {{/isRegOnPage}}
     </div>
 </div>
 <div class="menuDiv rightDiv">
